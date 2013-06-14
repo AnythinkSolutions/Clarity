@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Finances";
+}
+
+<div id="main-content">
+    @if (@User.Identity.IsAuthenticated)
+    {
+        <p class="error" data-bind="text: error"></p>
+        <button data-bind="click: addBill">Add Bill</button>
+
+        <section id="lists" data-bind="foreach: bills, visible: bills().length > 0">
+            <article class="todoList">
+                <header>
+                    <form data-bind="validate: true">
+                        <input class="required" data-bind="value: name, selected: isEditingName, blurOnEnter: true" />
+                    </form>
+                </header>
+
+                <a href="#" class="deletelist" data-bind="click: $parent.deleteBill">X</a>
+
+                @*<ul data-bind="foreach: payments">
+                    <li>
+                        <input type="checkbox" data-bind="checked: isPaid" />
+                        <input type="text" data-bind="value: Title, disable: IsDone, blurOnEnter: true" />
+                        <a href="#" data-bind="click: $parent.deleteTodo">X</a>
+                        <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
+                    </li>
+                </ul>*@
+
+                @*<form data-bind="submit: addTodo">
+                    <input class="addTodo" type="text" data-bind="value: NewTodoTitle, placeholder: 'Add new todo', event: { blur: addTodo }" />
+                </form>*@
+
+                <p class="error" data-bind="visible: errorMessage, text: errorMessage"></p>
+            </article>
+        </section>
+    }
+</div>
+
+@if (@User.Identity.IsAuthenticated)
+{
+    @section scripts {
+        @Scripts.Render("~/bundles/knockout")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/finances")
+    }
+}
