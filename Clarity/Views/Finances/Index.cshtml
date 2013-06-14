@@ -7,34 +7,56 @@
     {
         <p class="error" data-bind="text: error"></p>
         <button data-bind="click: addBill">Add Bill</button>
-
-        <section id="lists" data-bind="foreach: bills, visible: bills().length > 0">
-            <article class="todoList">
-                <header>
-                    <form data-bind="validate: true">
-                        <input class="required" data-bind="value: name, selected: isEditingName, blurOnEnter: true" />
-                    </form>
-                </header>
-
-                <a href="#" class="deletelist" data-bind="click: $parent.deleteBill">X</a>
-
-                @*<ul data-bind="foreach: payments">
-                    <li>
-                        <input type="checkbox" data-bind="checked: isPaid" />
-                        <input type="text" data-bind="value: Title, disable: IsDone, blurOnEnter: true" />
-                        <a href="#" data-bind="click: $parent.deleteTodo">X</a>
-                        <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
-                    </li>
-                </ul>*@
-
-                @*<form data-bind="submit: addTodo">
-                    <input class="addTodo" type="text" data-bind="value: NewTodoTitle, placeholder: 'Add new todo', event: { blur: addTodo }" />
-                </form>*@
-
-                <p class="error" data-bind="visible: errorMessage, text: errorMessage"></p>
-            </article>
-        </section>
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Day</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: bills">
+                <tr>
+                    <td>
+                        <div data-bind="visible: !isEditing()"><h5><span data-bind="text: Name"></span></h5></div> <!-- <a data-bind="attr: { href: '#/Bills/' + Id() }"></a> -->
+                        <input type="text" class="input-small span3" placeholder="Name" data-bind="value: Name, visible: isEditing()" />
+                    </td>
+                    <td>
+                        <div data-bind="visible: !isEditing()"><span data-bind="text: PaymentDay"></span></div>
+                        <input type="text" class="input-small span1" placeholder="Payment Day" data-bind="value: PaymentDay, visible: isEditing()" />
+                    </td>
+                    <td>
+                        <div data-bind="visible: errorMessage, text: errorMessage">
+                            <span data-bind="text: errorMessage" />
+                        </div>
+                        <div data-bind="visible: !isEditing() && !errorMessage">
+                            <button class="btn btn-mini" data-bind="click: edit">Edit</button>
+                            <button class="btn btn-mini" data-bind="click: del">Delete</button>
+                        </div>
+                        <div data-bind="visible: isEditing()">
+                            <button class="btn btn-small btn-success" data-bind="click: save">Save</button>
+                            <button class="btn btn-small btn-warning" data-bind="click: cancelEdit">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     }
+
+    <div id="confirmModal" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">x</button>
+            <h3 id="confirmHeader">Confirm Change</h3>
+        </div>
+        <div id="confirmBody" class="modal-body">
+            <p id="confirmBodyP">Body of message...</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmCancelButton" class="btn">Cancel</button>
+            <button id="confirmContinueButton" class="btn btn-primary">Continue</button>
+        </div>
+    </div>
 </div>
 
 @if (@User.Identity.IsAuthenticated)

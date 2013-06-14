@@ -30,8 +30,8 @@
                 // Create
                 return ajaxRequest("post", billsUrl(), bill)
                     .done(function (result) {
-                        bill.id = result.Id;
-                        bill.userId = result.UserId;
+                        bill.Id = result.Id;
+                        bill.UserId = result.UserId;
                     });
             }
         },

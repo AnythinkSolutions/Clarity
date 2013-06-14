@@ -30,6 +30,7 @@ namespace Clarity
                 "~/Scripts/todoList.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/finances").Include(
+                "~/Scripts/clarity.common.js",
                 "~/Scripts/todoList.bindings.js",
                 "~/Scripts/finances.dataAccess.js",
                 "~/Scripts/finances.js"));
@@ -41,6 +42,7 @@ namespace Clarity
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/Site.css",
+                "~/Content/Bootstrap.css",
                 "~/Content/TodoList.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

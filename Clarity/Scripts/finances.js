@@ -1,4 +1,5 @@
 ﻿/// <reference path="finances.dataAccess.js"/>
+/// <reference path="clarity.common.js"/>
 
 (function () {
 
@@ -13,8 +14,18 @@
         self.PaymentDay = ko.observable(dto.PaymentDay);
         self.IsFixed = ko.observable(dto.IsFixed);
 
-        self.isEditingName = ko.observable(false);
+        self.isEditing = ko.observable(false);
         self.errorMessage = ko.observable();
+
+        self.original = null;
+
+        self.copyTo = function(bill){
+            bill.Name(self.Name());
+            bill.UserId = self.UserId;
+            bill.Amount(self.Amount());
+            bill.PaymentDay(self.PaymentDay());
+            bill.IsFixed(self.IsFixed);
+        };
 
         self.save = function () {
             self.errorMessage(null);
@@ -25,11 +36,31 @@
                     var message = self.id ? "Error updating bill." : "Error adding bill.";
                     self.errorMessage(message);
                 });
+
+            self.isEditing(false);
         };
 
         self.del = function () {
+            confirmAction('Delete Bill', 'Are you sure you want to delete this bill?', self.doDelete);            
+        };
+
+        self.doDelete = function(){
             return Finances.Db.deleteBill(self.id)
                 .fail(function () { self.errorMessage("Error removing bill."); });
+        };
+
+        self.edit = function () {
+            self.original = new Bill();
+            self.copyTo(self.original);
+
+            self.isEditing(true);
+        };
+
+        self.cancelEdit = function () {
+            self.original.copyTo(self);
+            self.original = null;
+
+            self.isEditing(false);
         };
 
         // Auto-save when these properties change
@@ -56,7 +87,7 @@
             var bill = new Bill({ Name: "Bill 1", PaymentDay: 1 });  //, PaymentDay: 1, Amount: 0, IsFixed: false
             self.bills.unshift(bill); // Inserts on client a new item at the beginning of the array
             bill.save();                  // Inserts on server
-            bill.isEditingName(true);
+            bill.isEditing(true);
         };
 
         self.deleteBill = function (bill) {

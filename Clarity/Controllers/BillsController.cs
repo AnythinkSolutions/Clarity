@@ -14,7 +14,6 @@ namespace Clarity.Controllers
     public class BillsController : ApiController
     {
         private FinancesContext _db = new FinancesContext();
-        private static bool _initialized;
 
         private int UserId
         {
@@ -71,8 +70,10 @@ namespace Clarity.Controllers
                 dto.UserId = this.UserId;
 
                 var bill = dto.ToEntity();
+                bill.LastPayment = DateTime.Today;
+
                 _db.Bills.Add(bill);
-                //_db.SaveChanges();
+                _db.SaveChanges();
 
                 dto.Id = bill.Id;
 

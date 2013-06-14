@@ -61,8 +61,13 @@ else
 @if (@User.Identity.IsAuthenticated)
 {
     @section scripts {
+        @Scripts.Render("~/bundles/jqueryui")
         @Scripts.Render("~/bundles/knockout")        
         @Scripts.Render("~/bundles/jqueryval")
         @Scripts.Render("~/bundles/todoList")
+    }
+    
+    @section styles{
+        @Styles.Render("~/Content/themes/base/css")
     }
 }

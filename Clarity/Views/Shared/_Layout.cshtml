@@ -6,8 +6,9 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
+    @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/Content/themes/base/css")
+    @*@Styles.Render("~/Content/themes/base/css")*@
 </head>
 <body>
     <header>
@@ -27,7 +28,6 @@
     </footer>*@
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/ajaxlogin")
     @RenderSection("scripts", required: false)
 </body>
