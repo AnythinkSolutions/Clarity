@@ -26,6 +26,7 @@ namespace Clarity.Models.Finances
         public bool IsFixed { get; set; }
         public TimeSpan Frequency { get; set; }
 
+        [NotMapped]
         public DateTime LastPayment { get; set; }
 
         [Range(1, 31)]

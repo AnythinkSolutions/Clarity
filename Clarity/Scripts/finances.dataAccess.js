@@ -25,7 +25,7 @@
         saveBill: function (bill) {
             if (bill.Id) {
                 // Update
-                return ajaxRequest("put", billsUrl(bill.id), bill);
+                return ajaxRequest("put", billsUrl(bill.Id), bill);
             } else {
                 // Create
                 return ajaxRequest("post", billsUrl(), bill)

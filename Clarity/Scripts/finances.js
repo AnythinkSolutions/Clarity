@@ -11,6 +11,7 @@
         self.Name = ko.observable(dto.Name);
         self.UserId = dto.UserId;
         self.Amount = ko.observable(dto.Amount);
+        self.LastPaymentDate = ko.observable(dto.LastPaymentDate);
         self.PaymentDay = ko.observable(dto.PaymentDay);
         self.IsFixed = ko.observable(dto.IsFixed);
 
@@ -29,15 +30,14 @@
 
         self.save = function () {
             self.errorMessage(null);
-            //var t = { Name: "Test", UserId: 1 };
-            //var tj = ko.toJSON(t);
             return Finances.Db.saveBill(self)
                 .fail(function () {
                     var message = self.id ? "Error updating bill." : "Error adding bill.";
                     self.errorMessage(message);
-                });
-
-            self.isEditing(false);
+                })
+            .complete(function() {
+                self.isEditing(false);
+            });
         };
 
         self.del = function () {
@@ -45,13 +45,13 @@
         };
 
         self.doDelete = function(){
-            return Finances.Db.deleteBill(self.id)
+            return Finances.Db.deleteBill(self.Id)
                 .fail(function () { self.errorMessage("Error removing bill."); });
         };
 
         self.edit = function () {
-            self.original = new Bill();
-            self.copyTo(self.original);
+            self.original = new Bill(ko.toJS(self));
+            //self.copyTo(self.original);
 
             self.isEditing(true);
         };
@@ -64,7 +64,7 @@
         };
 
         // Auto-save when these properties change
-        self.Name.subscribe(self.save);
+        //self.Name.subscribe(self.save);
     }
 
     function FinancesViewModel() {
@@ -86,7 +86,7 @@
         self.addBill = function () {
             var bill = new Bill({ Name: "Bill 1", PaymentDay: 1 });  //, PaymentDay: 1, Amount: 0, IsFixed: false
             self.bills.unshift(bill); // Inserts on client a new item at the beginning of the array
-            bill.save();                  // Inserts on server
+            //bill.save();                  // Inserts on server
             bill.isEditing(true);
         };
 

@@ -30,7 +30,7 @@
                         <div data-bind="visible: errorMessage, text: errorMessage">
                             <span data-bind="text: errorMessage" />
                         </div>
-                        <div data-bind="visible: !isEditing() && !errorMessage">
+                        <div data-bind="visible: !isEditing()">
                             <button class="btn btn-mini" data-bind="click: edit">Edit</button>
                             <button class="btn btn-mini" data-bind="click: del">Delete</button>
                         </div>
@@ -63,7 +63,8 @@
 {
     @section scripts {
         @Scripts.Render("~/bundles/knockout")
-        @Scripts.Render("~/bundles/jqueryval")
+        @*@Scripts.Render("~/bundles/jqueryval")*@
+        @Scripts.Render("~/bundles/bootstrap")
         @Scripts.Render("~/bundles/finances")
     }
 }

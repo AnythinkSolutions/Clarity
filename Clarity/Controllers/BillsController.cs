@@ -2,6 +2,8 @@
 using Clarity.Models.Finances;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -86,5 +88,82 @@ namespace Clarity.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        /// <summary>
+        /// PUT: Updates and existing bill
+        /// </summary>
+        /// <param name="id">The id of the Bill</param>
+        /// <param name="billDto"></param>
+        /// <returns></returns>
+        public HttpResponseMessage PutBill(int id, BillDto billDto)
+        {
+            if (ModelState.IsValid && id == billDto.Id)
+            {
+                Bill bill = billDto.ToEntity();
+                if (_db.Entry(bill).Entity.UserId != this.UserId)
+                {
+                    // Trying to modify a record that does not belong to the user
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                }
+
+                _db.Entry(bill).State = EntityState.Modified;
+
+                try
+                {
+                    _db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        /// <summary>
+        /// DELETE: Deletes a bill
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public HttpResponseMessage DeleteBill(int id)
+        {
+            Bill bill = _db.Bills.Find(id);
+            if (bill == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            if (_db.Entry(bill).Entity.UserId != this.UserId)
+            {
+                // Trying to delete a record that does not belong to the user
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            }
+
+            BillDto billDto = new BillDto(bill);
+            _db.Bills.Remove(bill);
+
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, billDto);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _db.Dispose();
+            base.Dispose(disposing);
+        }
+
     }
 }
