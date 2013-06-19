@@ -47,6 +47,7 @@ namespace Clarity
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/Site.css",
                 "~/Content/Bootstrap.css",
+                "~/Content/Boostrap-responsive.css",
                 "~/Content/TodoList.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

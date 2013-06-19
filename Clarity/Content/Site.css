@@ -4,6 +4,8 @@
 }
 
 body {
+    padding-top: 60px;
+    padding-bottom: 40px;
     background-color: #fff;
     color: #333;
     max-width: 980px; /*Remove this to make it full screen*/
@@ -22,6 +24,26 @@ button, input[type=submit] {
     max-width: 960px;
     padding-right: 10px;
     padding-left: 10px;
+}
+
+/*#region Sidebar*/
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+@media (max-width: 980px) {
+    /* Enable use of floated navbar text */
+    .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+#logoutForm {
+    margin: 0 10px 10px;
+    line-height: 40px;
+    float: right;
 }
 
 /*#region Header */
